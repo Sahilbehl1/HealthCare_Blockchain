@@ -1,141 +1,140 @@
-# Healthcare E-Vault Contract
+# Healthcare E-Vault
 
-## Overview
+A decentralized healthcare record management system built on Ethereum blockchain that enables secure storage, sharing, and access control of medical records using IPFS and smart contracts.
 
-This project is a smart contract for managing file uploads and sharing access among users. Users can add files, remove them, and control access to their files.
+## Features
+
+* Secure storage of medical record references using IPFS
+* Blockchain-based ownership and access control
+* Upload and manage healthcare documents
+* Grant and revoke access to healthcare records
+* Transparent and tamper-resistant data management
+* Decentralized architecture for enhanced security
+
+## Technology Stack
+
+* **Blockchain:** Ethereum
+* **Smart Contracts:** Solidity
+* **Development Framework:** Hardhat
+* **Frontend:** React.js
+* **Wallet Integration:** MetaMask
+* **Storage:** IPFS
+
+## Project Structure
+
+```text
+Healthcare_E_Vault/
+├── client/              # React frontend
+├── contracts/           # Solidity smart contracts
+├── medical_chat/        # Backend/chat module
+├── scripts/             # Deployment scripts
+├── test/                # Smart contract tests
+├── hardhat.config.js    # Hardhat configuration
+└── README.md
+```
 
 ## Prerequisites
 
-- Node.js
-- Hardhat
-- Metamask
+Before running the project, ensure you have:
 
-## Setup
+* Node.js (v16 or later)
+* npm
+* Hardhat
+* MetaMask Browser Extension
 
-1. **Clone the repository:**
+## Installation
 
-   ```bash
-   git clone <your-repo-url>
-   cd Healthcare_E_Vault
-   ```
+### Clone Repository
 
-2. **Install dependencies:**
+```bash
+git clone <repository-url>
+cd Healthcare_E_Vault
+```
 
-   ```bash
-   npm install
-   ```
+### Install Dependencies
 
-## Running the Hardhat Network
+```bash
+npm install
+```
 
-To simulate an Ethereum network locally, run:
+## Running the Project
+
+### Start Local Blockchain
 
 ```bash
 npx hardhat node
 ```
 
-This command starts a local Ethereum network with several accounts pre-funded with test ETH.
+### Deploy Smart Contract
 
-## Deploying the Contract
-
-In a new terminal window, deploy the contract using:
+Open a new terminal and run:
 
 ```bash
 npx hardhat run scripts/deploy.js --network localhost
 ```
 
-This will deploy the `Upload` contract and provide the deployed address.
-
-## Interacting with the Contract
-
-Open a Hardhat console to interact with the deployed contract:
+### Start Frontend
 
 ```bash
-npx hardhat console --network localhost
+cd client
+npm install
+npm start
 ```
 
-### Step 1: Setting Up Contract Interaction
+The application will be available on:
 
-In the console, run the following commands to get the contract factory and attach it to the deployed instance:
+```text
+http://localhost:3000
+```
+
+## Smart Contract Functionalities
+
+### Upload Medical Records
 
 ```javascript
-const Upload = await ethers.getContractFactory("Upload");
-const uploadInstance = await Upload.attach("<deployed_contract_address>");
+await uploadInstance.add(userAddress, "ipfs://medical-record");
 ```
 
-Replace `<deployed_contract_address>` with the address provided after deployment.
-
-### Step 2: Adding Files
-
-Add files to your account with:
+### View Records
 
 ```javascript
-await uploadInstance.add("<your_account_address>", "ipfs://file1");
-await uploadInstance.add("<your_account_address>", "ipfs://file2");
-await uploadInstance.add("<your_account_address>", "ipfs://file3");
+await uploadInstance.display(userAddress);
 ```
 
-### Step 3: Viewing Files
-
-To view the files added to your account, run:
+### Remove Records
 
 ```javascript
-const files = await uploadInstance.display("<your_account_address>");
-console.log(files);
+await uploadInstance.removeFile(index);
 ```
 
-### Step 4: Removing a File
-
-To remove a file by its index (e.g., first file):
+### Grant Access
 
 ```javascript
-await uploadInstance.removeFile(0); // Removes the first file
+await uploadInstance.allow(otherUserAddress);
 ```
 
-### Step 5: Checking Updated Files
-
-After removing a file, check the updated list of files:
+### Revoke Access
 
 ```javascript
-const updatedFiles = await uploadInstance.display("<your_account_address>");
-console.log(updatedFiles);
+await uploadInstance.disallow(otherUserAddress);
 ```
 
-### Step 6: Sharing Access
+## Security Benefits
 
-Share access to another user by running:
+* Decentralized record ownership
+* Immutable transaction history
+* User-controlled permissions
+* Reduced risk of centralized data breaches
+* Transparent access management
 
-```javascript
-await uploadInstance.allow("<other_user_address>");
-```
+## Future Enhancements
 
-### Step 7: Viewing Files with Shared Access
-
-Switch to the other account and check the shared files:
-
-```javascript
-const otherAccountInstance = uploadInstance.connect("<other_user_address>");
-const sharedFiles = await otherAccountInstance.display("<your_account_address>");
-console.log(sharedFiles);
-```
-
-### Step 8: Revoking Access
-
-To revoke access from a user:
-
-```javascript
-await uploadInstance.disallow("<other_user_address>");
-```
-
-## Conclusion
-
-You can now manage file uploads and control access with this smart contract. Feel free to modify and expand its functionality as needed!
+* Role-based access for doctors and hospitals
+* Multi-signature approvals
+* Encrypted medical records
+* Patient consent management
+* Audit logs and analytics
 
 ## License
 
 This project is licensed under the MIT License.
-```
-
-### Notes:
-
-- Make sure to replace placeholders like `<your-repo-url>` and `<your_account_address>` with the appropriate values.
-- Adjust any sections based on specific functionalities or features of your contract as necessary.
